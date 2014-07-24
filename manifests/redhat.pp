@@ -19,9 +19,13 @@ class datadog::redhat {
       baseurl   => 'http://yum.datadoghq.com/rpm/',
     }
 
+    python::pip { 'tornado':
+      pkgname => 'tornado',
+    }
+
     package { 'datadog-agent':
       ensure  => latest,
-      require => Yumrepo['datadog'],
+      require => [ Yumrepo['datadog'], Python::Pip['tornado'] ],
     }
 
     service { "datadog-agent":
